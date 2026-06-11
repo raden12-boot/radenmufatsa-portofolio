@@ -51,6 +51,19 @@
             background-color: #050B14;
             color: #E2E8F0;
             overflow-x: hidden;
+            /* Anti-selection untuk mobile agar terasa seperti app */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Izinkan seleksi teks pada bagian tertentu jika dibutuhkan */
+        p, h1, h2, h3, span {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
         }
 
         /* Glassmorphism utility */
@@ -116,11 +129,14 @@
     <nav class="fixed w-full z-50 glass top-0 transition-all duration-300" id="navbar">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <div class="flex-shrink-0">
+                <!-- Logo -->
+                <div class="flex-shrink-0 z-50">
                     <a href="#home" class="font-space font-bold text-xl tracking-wider text-white flex items-center gap-2">
                         <i class="fa-solid fa-meteor text-space-neon"></i> RMSA
                     </a>
                 </div>
+                
+                <!-- Desktop Menu -->
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-8">
                         <a href="#about" class="hover:text-space-neon px-3 py-2 rounded-md text-sm font-medium transition-colors">About</a>
@@ -129,14 +145,39 @@
                         <a href="#aries" class="hover:text-space-neon px-3 py-2 rounded-md text-sm font-medium transition-colors">Aries</a>
                     </div>
                 </div>
+                
                 <div class="hidden md:block">
                     <a href="#contact" class="border border-space-neon text-space-neon hover:bg-space-neon hover:text-space-900 px-4 py-2 rounded-full text-sm font-medium transition-all shadow-[0_0_10px_rgba(0,240,255,0.2)] hover:shadow-[0_0_20px_rgba(0,240,255,0.6)]">
                         Contact
                     </a>
                 </div>
+
+                <!-- Mobile Hamburger Button -->
+                <div class="md:hidden flex items-center z-50">
+                    <button id="mobile-menu-btn" class="text-white hover:text-space-neon focus:outline-none transition-colors p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300 md:hidden"></div>
+
+    <!-- Mobile Sidebar -->
+    <div id="mobile-sidebar" class="fixed inset-y-0 right-0 w-64 glass z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col pt-20 px-6 shadow-2xl border-l border-white/10">
+        <button id="close-sidebar-btn" class="absolute top-5 right-6 text-white hover:text-space-neon transition-colors p-2">
+            <i class="fa-solid fa-xmark text-3xl"></i>
+        </button>
+        <div class="flex flex-col space-y-6 mt-10">
+            <a href="#about" class="sidebar-link text-white hover:text-space-neon text-lg font-medium transition-colors border-b border-white/5 pb-3">About</a>
+            <a href="#skills" class="sidebar-link text-white hover:text-space-neon text-lg font-medium transition-colors border-b border-white/5 pb-3">Skills</a>
+            <a href="#projects" class="sidebar-link text-white hover:text-space-neon text-lg font-medium transition-colors border-b border-white/5 pb-3">Projects</a>
+            <a href="#aries" class="sidebar-link text-white hover:text-space-neon text-lg font-medium transition-colors border-b border-white/5 pb-3">Aries</a>
+            <a href="#contact" class="sidebar-link mt-6 inline-block border border-space-neon text-space-neon hover:bg-space-neon hover:text-space-900 px-4 py-3 rounded-full text-center font-medium transition-all shadow-[0_0_10px_rgba(0,240,255,0.2)]">Contact Me</a>
+        </div>
+    </div>
 
     <section id="home" class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
         <div class="max-w-4xl mx-auto px-6 text-center z-10 relative">
@@ -370,8 +411,47 @@
     </footer>
 
     <script>
-        // Navbar Scrolled Effect
+        // Anti-Inspect & View Source Protection
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault(); // Mencegah klik kanan
+        });
+
+        document.onkeydown = function(e) {
+            // F12
+            if(e.keyCode == 123) {
+                return false;
+            }
+            // Ctrl+Shift+I (Membuka Inspect Element)
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+                return false;
+            }
+            // Ctrl+Shift+J (Membuka Console)
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+                return false;
+            }
+            // Ctrl+U (Membuka View Source)
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+                return false;
+            }
+            // Ctrl+S (Menyimpan Halaman)
+            if(e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) {
+                return false;
+            }
+            // Ctrl+P (Print)
+            if(e.ctrlKey && e.keyCode == 'P'.charCodeAt(0)) {
+                return false;
+            }
+        }
+
+        // Navbar & Sidebar Logic
         const navbar = document.getElementById('navbar');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+        const mobileSidebar = document.getElementById('mobile-sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+        // Navbar Scroll Effect
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
                 navbar.classList.add('shadow-lg', 'border-b', 'border-white/10');
@@ -380,6 +460,29 @@
                 navbar.classList.remove('shadow-lg', 'border-b', 'border-white/10');
                 navbar.style.background = 'rgba(10, 17, 40, 0.4)';
             }
+        });
+
+        // Toggle Sidebar Function
+        function toggleSidebar() {
+            const isClosed = mobileSidebar.classList.contains('translate-x-full');
+            if (isClosed) {
+                mobileSidebar.classList.remove('translate-x-full');
+                sidebarOverlay.classList.remove('hidden');
+                // Timeout kecil agar transisi opacity bekerja setelah display:block
+                setTimeout(() => sidebarOverlay.classList.remove('opacity-0'), 10);
+            } else {
+                mobileSidebar.classList.add('translate-x-full');
+                sidebarOverlay.classList.add('opacity-0');
+                setTimeout(() => sidebarOverlay.classList.add('hidden'), 300);
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleSidebar);
+        closeSidebarBtn.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', toggleSidebar);
+
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', toggleSidebar);
         });
 
         // Space Canvas Animation (Starfield & Parallax)
@@ -451,8 +554,8 @@
             }
         }
 
-        // Initialize stars
-        const numStars = window.innerWidth < 768 ? 75 : 150;
+        // Initialize stars (optimasi: lebih sedikit bintang di mobile agar lebih ringan)
+        const numStars = window.innerWidth < 768 ? 50 : 120;
         for (let i = 0; i < numStars; i++) {
             stars.push(new Star());
         }
@@ -467,6 +570,14 @@
             targetX = e.clientX;
             targetY = e.clientY;
         });
+
+        // Touch event untuk mobile agar interaktif tanpa memberatkan
+        window.addEventListener('touchmove', (e) => {
+            if(e.touches.length > 0) {
+                targetX = e.touches[0].clientX;
+                targetY = e.touches[0].clientY;
+            }
+        }, {passive: true});
 
         function animate() {
             ctx.clearRect(0, 0, width, height);
@@ -495,13 +606,14 @@
                 
                 // Restore logic position
                 star.x = origX;
-                star.y -= star.speed; // apply the upward drift logic independently
+                star.y -= star.speed; 
             });
 
             requestAnimationFrame(animate);
         }
 
-        animate();
+        // Start animasi
+        requestAnimationFrame(animate);
     </script>
 </body>
 </html>
