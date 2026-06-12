@@ -438,37 +438,59 @@
                     </div>
                 </div>
 
-                <!-- Project 3 -->
-                <div class="glass glass-hover rounded-2xl overflow-hidden group flex flex-col h-full">
-                    <div class="h-48 bg-space-800 relative overflow-hidden flex items-center justify-center border-b border-white/10">
-                        <i class="fa-solid fa-server text-6xl text-green-400/50 group-hover:text-green-400 transition-colors duration-500 group-hover:scale-110 transform"></i>
-                        <div class="absolute top-4 right-4 bg-green-400/20 text-green-400 text-xs px-2 py-1 rounded backdrop-blur-md border border-green-400/30">Backend Logic</div>
+                <!-- Project 3 (Sistem Manajemen M3U) -->
+                <div class="glass glass-hover rounded-2xl overflow-hidden group flex flex-col h-full lg:col-span-2 lg:flex-row">
+                    <div class="w-full lg:w-2/5 h-64 lg:h-auto bg-space-800 relative overflow-hidden flex items-center justify-center border-b lg:border-b-0 lg:border-r border-white/10">
+                        <i class="fa-solid fa-server text-8xl text-green-400/20 absolute inset-0 m-auto blur-sm"></i>
+                        <i class="fa-solid fa-database text-6xl text-green-400/80 group-hover:text-green-400 transition-colors duration-500 group-hover:scale-110 transform z-10 drop-shadow-[0_0_15px_rgba(74,222,128,0.5)]"></i>
+                        <div class="absolute top-4 right-4 bg-green-400/20 text-green-400 text-xs px-2 py-1 rounded backdrop-blur-md border border-green-400/30 z-20">Backend Logic</div>
                     </div>
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="font-space text-xl font-semibold text-white mb-3 group-hover:text-green-400 transition-colors">Sistem Manajemen M3U</h3>
-                        <p class="text-slate-300 text-sm mb-2"><strong class="text-white font-medium">Peran:</strong> Data Struktur / Logic</p>
-                        <p class="text-slate-400 text-sm mb-6 flex-grow">Menyusun dan merapikan database playlist siaran berbasis format #EXTM3U. Menghasilkan struktur antrean siaran yang ringan, mudah di-parsing, dan terorganisir sempurna untuk aplikasi klien.</p>
-                        <div class="flex flex-wrap gap-2 mt-auto">
-                            <span class="text-xs font-mono text-slate-300 bg-white/5 px-2 py-1 rounded border border-white/10">M3U Parsing</span>
-                            <span class="text-xs font-mono text-slate-300 bg-white/5 px-2 py-1 rounded border border-white/10">Struktur Data</span>
+                    <div class="w-full lg:w-3/5 p-6 md:p-8 flex flex-col flex-grow">
+                        <h3 class="font-space text-2xl font-bold text-white mb-3 group-hover:text-green-400 transition-colors">Sistem Manajemen M3U</h3>
+                        
+                        <div class="space-y-3 mb-6 flex-grow">
+                            <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-white font-medium">Peran:</strong> Data Struktur / Logic</p>
+                            <p class="text-slate-400 text-sm leading-relaxed"><strong class="text-white font-medium">Deskripsi & Hasil:</strong> Menyusun dan merapikan database playlist siaran berbasis format <span class="text-green-400 font-mono text-xs">#EXTM3U</span>. Pekerjaan ini memastikan struktur antrean siaran menjadi ringan, mudah di-parsing, dan terorganisir sempurna untuk dipanggil oleh aplikasi klien tanpa kendala.</p>
+                        </div>
+                        
+                        <!-- Screenshots Gallery -->
+                        <div class="mb-6">
+                            <h4 class="text-xs text-green-400 mb-2 font-space uppercase tracking-wider"><i class="fa-solid fa-code mr-1"></i> Data Structure Preview <span class="text-slate-500 lowercase ml-1 text-[10px]">(Klik untuk zoom)</span></h4>
+                            <div class="flex gap-3 overflow-x-auto pb-2 snap-x hide-scrollbar">
+                                <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/extm3u.png?raw=true" draggable="false" class="showcase-img h-40 w-auto rounded-lg snap-center border border-white/10 hover:border-green-400 transition-colors cursor-pointer" alt="Struktur Code EXTM3U" title="Struktur M3U">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-auto pt-5 border-t border-white/5">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-xs font-mono text-slate-300 bg-white/5 px-2 py-1 rounded border border-white/10">M3U Parsing</span>
+                                <span class="text-xs font-mono text-slate-300 bg-white/5 px-2 py-1 rounded border border-white/10">Struktur Data</span>
+                                <span class="text-xs font-mono text-slate-300 bg-white/5 px-2 py-1 rounded border border-white/10">API / Database</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Project 4 -->
-                <div class="glass glass-hover rounded-2xl overflow-hidden group flex flex-col h-full">
-                    <div class="h-48 bg-space-800 relative overflow-hidden flex items-center justify-center border-b border-white/10">
-                        <i class="fa-solid fa-code text-6xl text-blue-400/50 group-hover:text-blue-400 transition-colors duration-500 group-hover:scale-110 transform"></i>
-                        <div class="absolute top-4 right-4 bg-blue-400/20 text-blue-400 text-xs px-2 py-1 rounded backdrop-blur-md border border-blue-400/30">Web Dev</div>
+                <!-- Project 4 (Space Portofolio) -->
+                <div class="glass glass-hover rounded-2xl overflow-hidden group flex flex-col h-full lg:col-span-2 lg:flex-row">
+                    <div class="w-full lg:w-2/5 h-64 lg:h-auto bg-space-800 relative overflow-hidden flex items-center justify-center border-b lg:border-b-0 lg:border-r border-white/10">
+                        <i class="fa-solid fa-code text-8xl text-blue-400/20 absolute inset-0 m-auto blur-sm"></i>
+                        <i class="fa-brands fa-html5 text-6xl text-blue-400/80 group-hover:text-blue-400 transition-colors duration-500 group-hover:scale-110 transform z-10 drop-shadow-[0_0_15px_rgba(96,165,250,0.5)]"></i>
+                        <div class="absolute top-4 right-4 bg-blue-400/20 text-blue-400 text-xs px-2 py-1 rounded backdrop-blur-md border border-blue-400/30 z-20">Web Dev</div>
                     </div>
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="font-space text-xl font-semibold text-white mb-3 group-hover:text-blue-400 transition-colors">Space Portofolio (SPA)</h3>
-                        <p class="text-slate-300 text-sm mb-2"><strong class="text-white font-medium">Peran:</strong> Web Developer</p>
-                        <p class="text-slate-400 text-sm mb-6 flex-grow">Membangun website portofolio interaktif *Single Page Application* dengan arsitektur HTML dinamis. Menghasilkan UI bertema galaksi dengan animasi canvas yang ringan namun sangat estetik.</p>
-                        <div class="flex flex-wrap gap-2 mt-auto">
-                            <span class="text-xs font-mono text-slate-300 bg-white/5 px-2 py-1 rounded border border-white/10">HTML5</span>
-                            <span class="text-xs font-mono text-slate-300 bg-white/5 px-2 py-1 rounded border border-white/10">Tailwind CSS</span>
-                            <span class="text-xs font-mono text-slate-300 bg-white/5 px-2 py-1 rounded border border-white/10">JS Canvas</span>
+                    <div class="w-full lg:w-3/5 p-6 md:p-8 flex flex-col flex-grow">
+                        <h3 class="font-space text-2xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">Space Portofolio (SPA)</h3>
+                        <div class="space-y-3 mb-6 flex-grow">
+                            <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-white font-medium">Peran:</strong> Web Developer</p>
+                            <p class="text-slate-400 text-sm leading-relaxed"><strong class="text-white font-medium">Deskripsi & Hasil:</strong> Membangun website portofolio interaktif *Single Page Application* dengan arsitektur HTML dinamis. Menghasilkan UI bertema galaksi dengan animasi canvas yang ringan, fitur anti-inspect, dan sistem notifikasi kustom yang estetik.</p>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-auto pt-5 border-t border-white/5">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-xs font-mono text-slate-300 bg-white/5 px-2 py-1 rounded border border-white/10">HTML5</span>
+                                <span class="text-xs font-mono text-slate-300 bg-white/5 px-2 py-1 rounded border border-white/10">Tailwind CSS</span>
+                                <span class="text-xs font-mono text-slate-300 bg-white/5 px-2 py-1 rounded border border-white/10">JS Canvas</span>
+                            </div>
                         </div>
                     </div>
                 </div>
