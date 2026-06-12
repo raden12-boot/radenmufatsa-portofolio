@@ -66,6 +66,15 @@
             user-select: text;
         }
 
+        /* Anti-drag untuk mencegah gambar dan link diseret ke tab baru */
+        img, a {
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-drag: none;
+        }
+
         /* Glassmorphism utility */
         .glass {
             background: rgba(10, 17, 40, 0.4);
@@ -291,10 +300,10 @@
                 <div class="glass glass-hover rounded-2xl overflow-hidden group flex flex-col h-full">
                     <div class="h-48 bg-space-800 relative overflow-hidden flex items-center justify-center border-b border-white/10">
                         <!-- Background Effect -->
-                        <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/ICONTVKITA.png?raw=true" class="absolute inset-0 w-full h-full object-cover opacity-20 blur-xl">
+                        <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/ICONTVKITA.png?raw=true" draggable="false" class="absolute inset-0 w-full h-full object-cover opacity-20 blur-xl">
                         
                         <!-- Logo TV KITA -->
-                        <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/ICONTVKITA.png?raw=true" alt="TV KITA Logo" class="w-24 h-24 object-contain group-hover:scale-110 transition-transform duration-500 z-10 drop-shadow-[0_0_15px_rgba(0,240,255,0.5)]">
+                        <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/ICONTVKITA.png?raw=true" alt="TV KITA Logo" draggable="false" class="w-24 h-24 object-contain group-hover:scale-110 transition-transform duration-500 z-10 drop-shadow-[0_0_15px_rgba(0,240,255,0.5)]">
                         
                         <div class="absolute top-4 right-4 bg-space-purple/20 text-space-purple text-xs px-2 py-1 rounded backdrop-blur-md border border-space-purple/30 z-20">Streaming</div>
                     </div>
@@ -306,10 +315,10 @@
                         <div class="mb-4">
                             <h4 class="text-xs text-space-neon mb-2 font-space uppercase tracking-wider"><i class="fa-solid fa-image mr-1"></i> Preview App</h4>
                             <div class="flex gap-3 overflow-x-auto pb-2 snap-x hide-scrollbar">
-                                <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/DASHBOARD%20Preview%20TVKITA.jpeg?raw=true" class="h-36 w-auto rounded-lg snap-center border border-white/10 hover:border-space-neon transition-colors cursor-pointer" alt="Dashboard" title="Dashboard">
-                                <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/SportPreview%20TVKITA.jpeg?raw=true" class="h-36 w-auto rounded-lg snap-center border border-white/10 hover:border-space-neon transition-colors cursor-pointer" alt="Sport CH" title="Sport CH">
-                                <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/MOVIES%20Preview%20TVKITA.jpeg?raw=true" class="h-36 w-auto rounded-lg snap-center border border-white/10 hover:border-space-neon transition-colors cursor-pointer" alt="Movies CH" title="Movies CH">
-                                <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/TVNASIONAL%20Preview%20TVKITA.jpeg?raw=true" class="h-36 w-auto rounded-lg snap-center border border-white/10 hover:border-space-neon transition-colors cursor-pointer" alt="TV Nasional" title="TV Nasional">
+                                <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/DASHBOARD%20Preview%20TVKITA.jpeg?raw=true" draggable="false" class="h-36 w-auto rounded-lg snap-center border border-white/10 hover:border-space-neon transition-colors cursor-pointer" alt="Dashboard" title="Dashboard">
+                                <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/SportPreview%20TVKITA.jpeg?raw=true" draggable="false" class="h-36 w-auto rounded-lg snap-center border border-white/10 hover:border-space-neon transition-colors cursor-pointer" alt="Sport CH" title="Sport CH">
+                                <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/MOVIES%20Preview%20TVKITA.jpeg?raw=true" draggable="false" class="h-36 w-auto rounded-lg snap-center border border-white/10 hover:border-space-neon transition-colors cursor-pointer" alt="Movies CH" title="Movies CH">
+                                <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/TVNASIONAL%20Preview%20TVKITA.jpeg?raw=true" draggable="false" class="h-36 w-auto rounded-lg snap-center border border-white/10 hover:border-space-neon transition-colors cursor-pointer" alt="TV Nasional" title="TV Nasional">
                             </div>
                         </div>
 
@@ -318,7 +327,7 @@
                                 <span class="text-xs font-mono text-slate-300 bg-white/5 px-2 py-1 rounded">App Builder</span>
                                 <span class="text-xs font-mono text-slate-300 bg-white/5 px-2 py-1 rounded">UI/UX</span>
                             </div>
-                            <a href="https://download1078.mediafire.com/htsmnoxklf3g0dZwPXYPzUQnuej-5Snhk_vOk6TilDMSE8NdWEqbloh7YzS8KrCx16VexWhyufJFp10k9Wkq3oZvxS7kA1KAcTQzy6rhgGfYwlZALdVvD-zU8MIK06jceTFWO0b_ytZvQEhPo-MakaNkPwqVNA3NZJ-kH7uZAvo/q9zae2e38nfj8y7/ApkStreaming+Raden+Mufatsa+1.apk" target="_blank" class="w-full xl:w-auto text-center bg-space-neon/10 hover:bg-space-neon text-space-neon hover:text-space-900 border border-space-neon/50 px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2">
+                            <a href="https://download1078.mediafire.com/htsmnoxklf3g0dZwPXYPzUQnuej-5Snhk_vOk6TilDMSE8NdWEqbloh7YzS8KrCx16VexWhyufJFp10k9Wkq3oZvxS7kA1KAcTQzy6rhgGfYwlZALdVvD-zU8MIK06jceTFWO0b_ytZvQEhPo-MakaNkPwqVNA3NZJ-kH7uZAvo/q9zae2e38nfj8y7/ApkStreaming+Raden+Mufatsa+1.apk" target="_blank" draggable="false" class="w-full xl:w-auto text-center bg-space-neon/10 hover:bg-space-neon text-space-neon hover:text-space-900 border border-space-neon/50 px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-download"></i> Unduh APK
                             </a>
                         </div>
@@ -445,6 +454,11 @@
         // Anti-Inspect & View Source Protection
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault(); // Mencegah klik kanan
+        });
+
+        // Mencegah drag and drop gambar atau link ke tab baru
+        document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
         });
 
         document.onkeydown = function(e) {
