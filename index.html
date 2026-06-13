@@ -51,14 +51,12 @@
             background-color: #050B14;
             color: #E2E8F0;
             overflow-x: hidden;
-            /* Anti-selection untuk mobile agar terasa seperti app */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
         }
 
-        /* Izinkan seleksi teks pada bagian tertentu jika dibutuhkan */
         p, h1, h2, h3, span, strong, i {
             -webkit-user-select: text;
             -moz-user-select: text;
@@ -66,7 +64,6 @@
             user-select: text;
         }
 
-        /* Anti-drag untuk mencegah gambar dan link diseret ke tab baru */
         img, a {
             -webkit-user-drag: none;
             -khtml-user-drag: none;
@@ -75,7 +72,7 @@
             user-drag: none;
         }
 
-        /* Glassmorphism utility */
+        /* Glassmorphism */
         .glass {
             background: rgba(10, 17, 40, 0.4);
             backdrop-filter: blur(12px);
@@ -95,7 +92,6 @@
             text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
         }
 
-        /* Canvas background */
         #space-canvas {
             position: fixed;
             top: 0;
@@ -107,22 +103,11 @@
             background: radial-gradient(circle at 50% 50%, #0A1128 0%, #050B14 100%);
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #050B14;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #00F0FF;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050B14; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00F0FF; }
 
-        /* Gradient Text */
         .text-gradient {
             background: linear-gradient(to right, #00F0FF, #8A2BE2);
             -webkit-background-clip: text;
@@ -130,21 +115,21 @@
             background-clip: text;
         }
 
-        /* Hide scrollbar untuk gallery screenshot */
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        /* Language Toggle Logic - Sangat ringan, tanpa JS render ulang */
+        body.lang-en .lang-id { display: none !important; }
+        body:not(.lang-en) .lang-en { display: none !important; }
     </style>
 </head>
 <body class="antialiased selection:bg-space-neon selection:text-space-900">
 
     <canvas id="space-canvas"></canvas>
 
-    <!-- Top Navbar -->
     <nav class="fixed w-full z-50 glass top-0 transition-all duration-300" id="navbar">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
@@ -155,27 +140,41 @@
                     </a>
                 </div>
                 
-                <!-- Desktop Menu (Daftar Isi) -->
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-6 lg:space-x-8">
-                        <a href="#about" class="hover:text-space-neon px-3 py-2 rounded-md text-sm font-medium transition-colors">Profil</a>
-                        <a href="#skills" class="hover:text-space-neon px-3 py-2 rounded-md text-sm font-medium transition-colors">Skill & Pengalaman</a>
-                        <a href="#projects" class="hover:text-space-neon px-3 py-2 rounded-md text-sm font-medium transition-colors">Showcase Karya</a>
-                        <a href="#aries" class="hover:text-space-neon px-3 py-2 rounded-md text-sm font-medium transition-colors">Aries</a>
-                    </div>
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex ml-10 items-baseline space-x-6 lg:space-x-8">
+                    <a href="#about" class="hover:text-space-neon px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        <span class="lang-id">Profil</span><span class="lang-en">Profile</span>
+                    </a>
+                    <a href="#skills" class="hover:text-space-neon px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        <span class="lang-id">Skill & Pengalaman</span><span class="lang-en">Skills & Exp</span>
+                    </a>
+                    <a href="#projects" class="hover:text-space-neon px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        <span class="lang-id">Showcase Karya</span><span class="lang-en">Projects</span>
+                    </a>
+                    <a href="#aries" class="hover:text-space-neon px-3 py-2 rounded-md text-sm font-medium transition-colors">Aries</a>
                 </div>
                 
-                <div class="hidden md:block">
-                    <a href="#contact" class="border border-space-neon text-space-neon hover:bg-space-neon hover:text-space-900 px-4 py-2 rounded-full text-sm font-medium transition-all shadow-[0_0_10px_rgba(0,240,255,0.2)] hover:shadow-[0_0_20px_rgba(0,240,255,0.6)]">
-                        Contact
-                    </a>
-                </div>
-
-                <!-- Mobile Hamburger Button -->
-                <div class="md:hidden flex items-center z-50">
-                    <button id="mobile-menu-btn" class="text-white hover:text-space-neon focus:outline-none transition-colors p-2">
-                        <i class="fa-solid fa-bars text-2xl"></i>
+                <!-- Actions Right -->
+                <div class="flex items-center gap-3 z-50">
+                    <!-- Tombol Bahasa Universal -->
+                    <button id="lang-toggle-btn" class="glass border border-white/20 px-3 py-1.5 rounded-full text-xs font-space font-medium text-white hover:text-space-neon hover:border-space-neon transition-all flex items-center gap-2" title="Ganti Bahasa / Change Language">
+                        <i class="fa-solid fa-earth-asia"></i>
+                        <span class="lang-id block w-4 text-center">ID</span>
+                        <span class="lang-en block w-4 text-center">EN</span>
                     </button>
+
+                    <div class="hidden md:block">
+                        <a href="#contact" class="border border-space-neon text-space-neon hover:bg-space-neon hover:text-space-900 px-4 py-2 rounded-full text-sm font-medium transition-all shadow-[0_0_10px_rgba(0,240,255,0.2)] hover:shadow-[0_0_20px_rgba(0,240,255,0.6)]">
+                            Contact
+                        </a>
+                    </div>
+
+                    <!-- Mobile Hamburger Button -->
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-btn" class="text-white hover:text-space-neon focus:outline-none transition-colors p-2">
+                            <i class="fa-solid fa-bars text-2xl"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -184,42 +183,45 @@
     <!-- Mobile Sidebar Overlay -->
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300 md:hidden"></div>
 
-    <!-- Mobile Sidebar (Daftar Isi Mobile) -->
+    <!-- Mobile Sidebar -->
     <div id="mobile-sidebar" class="fixed inset-y-0 right-0 w-64 glass z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col pt-20 px-6 shadow-2xl border-l border-white/10">
         <button id="close-sidebar-btn" class="absolute top-5 right-6 text-white hover:text-space-neon transition-colors p-2">
             <i class="fa-solid fa-xmark text-3xl"></i>
         </button>
         <div class="flex flex-col space-y-6 mt-10">
-            <a href="#about" class="sidebar-link text-white hover:text-space-neon text-lg font-medium transition-colors border-b border-white/5 pb-3">Ringkasan Profil</a>
-            <a href="#skills" class="sidebar-link text-white hover:text-space-neon text-lg font-medium transition-colors border-b border-white/5 pb-3">Skill & Pengalaman</a>
-            <a href="#projects" class="sidebar-link text-white hover:text-space-neon text-lg font-medium transition-colors border-b border-white/5 pb-3">Showcase Karya</a>
+            <a href="#about" class="sidebar-link text-white hover:text-space-neon text-lg font-medium transition-colors border-b border-white/5 pb-3"><span class="lang-id">Ringkasan Profil</span><span class="lang-en">Profile Summary</span></a>
+            <a href="#skills" class="sidebar-link text-white hover:text-space-neon text-lg font-medium transition-colors border-b border-white/5 pb-3"><span class="lang-id">Skill & Pengalaman</span><span class="lang-en">Skills & Experience</span></a>
+            <a href="#projects" class="sidebar-link text-white hover:text-space-neon text-lg font-medium transition-colors border-b border-white/5 pb-3"><span class="lang-id">Showcase Karya</span><span class="lang-en">Project Showcase</span></a>
             <a href="#aries" class="sidebar-link text-white hover:text-space-neon text-lg font-medium transition-colors border-b border-white/5 pb-3">Birth Star</a>
-            <a href="#contact" class="sidebar-link mt-6 inline-block border border-space-neon text-space-neon hover:bg-space-neon hover:text-space-900 px-4 py-3 rounded-full text-center font-medium transition-all shadow-[0_0_10px_rgba(0,240,255,0.2)]">Hubungi Saya</a>
+            <a href="#contact" class="sidebar-link mt-6 inline-block border border-space-neon text-space-neon hover:bg-space-neon hover:text-space-900 px-4 py-3 rounded-full text-center font-medium transition-all shadow-[0_0_10px_rgba(0,240,255,0.2)]"><span class="lang-id">Hubungi Saya</span><span class="lang-en">Contact Me</span></a>
         </div>
     </div>
 
-    <!-- Hero Section (Berfungsi sebagai Cover) -->
+    <!-- Hero Section -->
     <section id="home" class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
         <div class="max-w-4xl mx-auto px-6 text-center z-10 relative">
-            <p class="text-space-neon font-space tracking-widest mb-4 uppercase text-sm md:text-base animate-pulse">Portofolio Profesional &bull; Web Developer</p>
+            <p class="text-space-neon font-space tracking-widest mb-4 uppercase text-sm md:text-base animate-pulse">
+                <span class="lang-id">Portofolio Profesional &bull; Web Developer</span>
+                <span class="lang-en">Professional Portfolio &bull; Web Developer</span>
+            </p>
             <h1 class="font-space font-bold text-4xl md:text-6xl lg:text-7xl mb-6 text-white leading-tight">
                 Raden Mufatsa <br />
                 <span class="text-gradient">Sachenka Ariyanto</span>
             </h1>
             <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light">
-                Membangun ekosistem digital yang <span class="text-white font-medium">clean, cepat,</span> dan <span class="text-white font-medium">fungsional</span> dengan arsitektur modern dan pengalaman pengguna yang mulus.
+                <span class="lang-id">Membangun ekosistem digital yang <span class="text-white font-medium">clean, cepat,</span> dan <span class="text-white font-medium">fungsional</span> dengan arsitektur modern dan pengalaman pengguna yang mulus.</span>
+                <span class="lang-en">Building <span class="text-white font-medium">clean, fast,</span> and <span class="text-white font-medium">functional</span> digital ecosystems with modern architecture and seamless user experiences.</span>
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#projects" class="bg-space-neon text-space-900 px-8 py-3 rounded-full font-medium hover:bg-white transition-all shadow-[0_0_15px_rgba(0,240,255,0.4)] hover:shadow-[0_0_25px_rgba(0,240,255,0.8)]">
-                    Jelajahi Karya
+                    <span class="lang-id">Jelajahi Karya</span><span class="lang-en">Explore Works</span>
                 </a>
                 <a href="#contact" class="glass px-8 py-3 rounded-full font-medium text-white hover:border-space-neon transition-all">
-                    Hubungi Saya
+                    <span class="lang-id">Hubungi Saya</span><span class="lang-en">Contact Me</span>
                 </a>
             </div>
         </div>
         
-        <!-- Glowing orbit accent -->
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-white/5 animate-[spin_60s_linear_infinite] pointer-events-none"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full border border-space-neon/10 animate-[spin_90s_linear_infinite_reverse] pointer-events-none"></div>
     </section>
@@ -228,7 +230,9 @@
     <section id="about" class="py-24 relative">
         <div class="max-w-5xl mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="font-space text-3xl md:text-4xl font-bold text-white mb-4">Ringkasan Profesional</h2>
+                <h2 class="font-space text-3xl md:text-4xl font-bold text-white mb-4">
+                    <span class="lang-id">Ringkasan Profesional</span><span class="lang-en">Professional Summary</span>
+                </h2>
             </div>
             
             <div class="glass rounded-3xl p-8 md:p-12 relative overflow-hidden flex flex-col md:flex-row items-center md:items-start gap-10 border-l-4 border-l-space-purple">
@@ -243,25 +247,32 @@
                 
                 <div class="flex-1 z-10 space-y-8">
                     <div>
-                        <h3 class="text-space-neon font-space font-semibold tracking-wider uppercase text-sm mb-2">Latar Belakang</h3>
+                        <h3 class="text-space-neon font-space font-semibold tracking-wider uppercase text-sm mb-2">
+                            <span class="lang-id">Latar Belakang</span><span class="lang-en">Background</span>
+                        </h3>
                         <p class="text-slate-300 leading-relaxed">
-                            Saya adalah seorang *self-taught* web developer muda yang bersemangat. Memulai perjalanan coding dan pengembangan aplikasi di usia dini, saya fokus pada perancangan antarmuka visual (UI) yang bersih, serta logika fungsional aplikasi berbasis web.
+                            <span class="lang-id">Saya adalah seorang *self-taught* web developer muda yang bersemangat. Memulai perjalanan coding dan pengembangan aplikasi di usia dini, saya fokus pada perancangan antarmuka visual (UI) yang bersih, serta logika fungsional aplikasi berbasis web.</span>
+                            <span class="lang-en">I am a passionate *self-taught* young web developer. Starting my coding and app development journey at an early age, I focus on designing clean visual interfaces (UI) and functional logic for web-based applications.</span>
                         </p>
                     </div>
                     
                     <div>
-                        <h3 class="text-space-neon font-space font-semibold tracking-wider uppercase text-sm mb-2">Fokus & Keahlian Khusus</h3>
+                        <h3 class="text-space-neon font-space font-semibold tracking-wider uppercase text-sm mb-2">
+                            <span class="lang-id">Fokus & Keahlian Khusus</span><span class="lang-en">Focus & Specialization</span>
+                        </h3>
                         <p class="text-slate-300 leading-relaxed">
-                            Di luar pengembangan antarmuka (HTML, CSS, JS), saya memiliki spesialisasi dalam merancang dan membangun aplikasi streaming interaktif memanfaatkan platform <i>app builder</i>. Saya terbiasa menangani manajemen data penyiaran menggunakan format playlist <span class="text-white font-mono text-sm bg-white/10 px-2 py-0.5 rounded">#EXTM3U</span>.
+                            <span class="lang-id">Di luar pengembangan antarmuka (HTML, CSS, JS), saya memiliki spesialisasi dalam merancang dan membangun aplikasi streaming interaktif memanfaatkan platform <i>app builder</i>. Saya terbiasa menangani manajemen data penyiaran menggunakan format playlist <span class="text-white font-mono text-sm bg-white/10 px-2 py-0.5 rounded">#EXTM3U</span>.</span>
+                            <span class="lang-en">Beyond interface development (HTML, CSS, JS), I specialize in designing and building interactive streaming apps utilizing <i>app builder</i> platforms. I am highly accustomed to handling broadcast data management using the <span class="text-white font-mono text-sm bg-white/10 px-2 py-0.5 rounded">#EXTM3U</span> playlist format.</span>
                         </p>
                     </div>
                     
                     <div class="bg-space-900/50 p-6 rounded-2xl border border-white/5">
                         <h3 class="text-space-purple font-space font-semibold tracking-wider uppercase text-sm mb-2 flex items-center gap-2">
-                            <i class="fa-solid fa-rocket"></i> Visi & Tujuan Karier
+                            <i class="fa-solid fa-rocket"></i> <span class="lang-id">Visi & Tujuan Karier</span><span class="lang-en">Vision & Career Goals</span>
                         </h3>
                         <p class="text-slate-300 italic text-sm leading-relaxed">
-                            "Menciptakan produk digital dan ekosistem aplikasi yang ringan, efisien, dan berdampak positif. Saya berkomitmen untuk terus mengeksplorasi teknologi web modern guna memberikan pengalaman pengguna (UX) tingkat tinggi dalam setiap karya."
+                            <span class="lang-id">"Menciptakan produk digital dan ekosistem aplikasi yang ringan, efisien, dan berdampak positif. Saya berkomitmen untuk terus mengeksplorasi teknologi web modern guna memberikan pengalaman pengguna (UX) tingkat tinggi dalam setiap karya."</span>
+                            <span class="lang-en">"Creating lightweight, efficient, and impactful digital products and application ecosystems. I am committed to continuously exploring modern web technologies to deliver high-level user experiences (UX) in every project."</span>
                         </p>
                     </div>
                 </div>
@@ -273,14 +284,21 @@
     <section id="skills" class="py-24 relative bg-space-800/30 border-y border-white/5">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="font-space text-3xl md:text-4xl font-bold text-white mb-4">Keterampilan & Pengalaman</h2>
-                <p class="text-slate-400">Kombinasi *hard skills* teknis dan rekam jejak eksplorasi digital.</p>
+                <h2 class="font-space text-3xl md:text-4xl font-bold text-white mb-4">
+                    <span class="lang-id">Keterampilan & Pengalaman</span><span class="lang-en">Skills & Experience</span>
+                </h2>
+                <p class="text-slate-400">
+                    <span class="lang-id">Kombinasi *hard skills* teknis dan rekam jejak eksplorasi digital.</span>
+                    <span class="lang-en">A combination of technical *hard skills* and a track record of digital exploration.</span>
+                </p>
             </div>
             
             <div class="flex flex-col lg:flex-row gap-12">
                 <!-- Hard Skills Grid -->
                 <div class="lg:w-1/2">
-                    <h3 class="text-xl font-space font-semibold text-white mb-6 border-b border-white/10 pb-2">Kompetensi Teknis</h3>
+                    <h3 class="text-xl font-space font-semibold text-white mb-6 border-b border-white/10 pb-2">
+                        <span class="lang-id">Kompetensi Teknis</span><span class="lang-en">Technical Competencies</span>
+                    </h3>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="glass glass-hover rounded-2xl p-5 transition-all cursor-default flex items-center gap-4">
                             <i class="fa-brands fa-html5 text-3xl text-orange-500"></i>
@@ -293,7 +311,7 @@
                             <i class="fa-brands fa-js text-3xl text-yellow-400"></i>
                             <div class="text-left">
                                 <h4 class="font-medium text-white text-sm">JavaScript</h4>
-                                <p class="text-xs text-slate-400">DOM & Interaksi</p>
+                                <p class="text-xs text-slate-400">DOM & <span class="lang-id">Interaksi</span><span class="lang-en">Interaction</span></p>
                             </div>
                         </div>
                         <div class="glass glass-hover rounded-2xl p-5 transition-all cursor-default flex items-center gap-4">
@@ -313,8 +331,8 @@
                         <div class="col-span-2 glass glass-hover rounded-2xl p-5 transition-all cursor-default flex items-center gap-4">
                             <i class="fa-solid fa-list text-3xl text-green-400"></i>
                             <div class="text-left">
-                                <h4 class="font-medium text-white text-sm">Manajemen Playlist #EXTM3U</h4>
-                                <p class="text-xs text-slate-400">Struktur & Parsing Data Siaran</p>
+                                <h4 class="font-medium text-white text-sm"><span class="lang-id">Manajemen Playlist</span><span class="lang-en">Playlist Management</span> #EXTM3U</h4>
+                                <p class="text-xs text-slate-400"><span class="lang-id">Struktur & Parsing Data Siaran</span><span class="lang-en">Broadcast Data Structure & Parsing</span></p>
                             </div>
                         </div>
                     </div>
@@ -322,26 +340,36 @@
 
                 <!-- Experience Orbit (Timeline) -->
                 <div class="lg:w-1/2">
-                    <h3 class="text-xl font-space font-semibold text-white mb-6 border-b border-white/10 pb-2">Orbit Pengalaman</h3>
+                    <h3 class="text-xl font-space font-semibold text-white mb-6 border-b border-white/10 pb-2">
+                        <span class="lang-id">Orbit Pengalaman</span><span class="lang-en">Experience Orbit</span>
+                    </h3>
                     <div class="relative border-l border-space-neon/30 ml-3 md:ml-4 space-y-8 pb-4">
                         
                         <!-- Timeline Item 1 -->
                         <div class="relative pl-8">
                             <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 bg-space-neon rounded-full shadow-[0_0_10px_#00F0FF]"></div>
                             <h4 class="text-white font-medium">Solo Developer - TV KITA App & Raden TV</h4>
-                            <span class="text-space-purple text-xs font-mono mb-2 block">Proyek Mandiri &bull; Present</span>
+                            <span class="text-space-purple text-xs font-mono mb-2 block">
+                                <span class="lang-id">Proyek Mandiri</span><span class="lang-en">Independent Project</span> &bull; Present
+                            </span>
                             <p class="text-slate-400 text-sm leading-relaxed">
-                                Merancang, merakit, dan meluncurkan aplikasi streaming mencakup Live TV & Video On Demand. Bertanggung jawab atas pengelolaan data, sinkronisasi channel, hingga UI/UX agar nyaman digunakan layaknya platform streaming premium.
+                                <span class="lang-id">Merancang, merakit, dan meluncurkan aplikasi streaming mencakup Live TV & Video On Demand. Bertanggung jawab atas pengelolaan data, sinkronisasi channel, hingga UI/UX agar nyaman digunakan layaknya platform streaming premium.</span>
+                                <span class="lang-en">Designed, built, and launched streaming applications covering Live TV & Video On Demand. Responsible for data management, channel synchronization, and UI/UX to ensure a premium viewing experience.</span>
                             </p>
                         </div>
 
                         <!-- Timeline Item 2 -->
                         <div class="relative pl-8">
                             <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 bg-white/40 rounded-full"></div>
-                            <h4 class="text-white font-medium">Pengembangan Portofolio Web</h4>
-                            <span class="text-slate-500 text-xs font-mono mb-2 block">Eksplorasi Web Dev &bull; 2024</span>
+                            <h4 class="text-white font-medium">
+                                <span class="lang-id">Pengembangan Portofolio Web</span><span class="lang-en">Web Portfolio Development</span>
+                            </h4>
+                            <span class="text-slate-500 text-xs font-mono mb-2 block">
+                                <span class="lang-id">Eksplorasi Web Dev</span><span class="lang-en">Web Dev Exploration</span> &bull; 2024
+                            </span>
                             <p class="text-slate-400 text-sm leading-relaxed">
-                                Mempelajari fundamental arsitektur web modern menggunakan HTML, CSS modern (Tailwind), dan integrasi JavaScript untuk efek interaktif tingkat lanjut (Canvas, DOM Manipulation).
+                                <span class="lang-id">Mempelajari fundamental arsitektur web modern menggunakan HTML, CSS modern (Tailwind), dan integrasi JavaScript untuk efek interaktif tingkat lanjut (Canvas, DOM Manipulation).</span>
+                                <span class="lang-en">Studied the fundamentals of modern web architecture using HTML, CSS (Tailwind), and integrated JavaScript for advanced interactive effects (Canvas, DOM Manipulation).</span>
                             </p>
                         </div>
                         
@@ -356,8 +384,13 @@
         <div class="absolute top-1/2 left-0 w-96 h-96 bg-space-neon/5 rounded-full blur-3xl pointer-events-none"></div>
         <div class="max-w-6xl mx-auto px-6 relative z-10">
             <div class="text-center mb-16">
-                <h2 class="font-space text-3xl md:text-4xl font-bold text-white mb-4">Koleksi Karya (Showcase)</h2>
-                <p class="text-slate-400">Implementasi nyata dari keahlian teknis dan pemecahan masalah.</p>
+                <h2 class="font-space text-3xl md:text-4xl font-bold text-white mb-4">
+                    <span class="lang-id">Koleksi Karya (Showcase)</span><span class="lang-en">Project Showcase</span>
+                </h2>
+                <p class="text-slate-400">
+                    <span class="lang-id">Implementasi nyata dari keahlian teknis dan pemecahan masalah.</span>
+                    <span class="lang-en">Real-world implementation of technical skills and problem-solving.</span>
+                </p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -366,19 +399,23 @@
                     <div class="w-full lg:w-2/5 h-64 lg:h-auto bg-space-800 relative overflow-hidden flex items-center justify-center border-b lg:border-b-0 lg:border-r border-white/10">
                         <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/ICONTVKITA.png?raw=true" draggable="false" class="absolute inset-0 w-full h-full object-cover opacity-20 blur-xl">
                         <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/ICONTVKITA.png?raw=true" alt="TV KITA Logo" draggable="false" class="w-32 h-32 object-contain group-hover:scale-110 transition-transform duration-500 z-10 drop-shadow-[0_0_15px_rgba(0,240,255,0.5)]">
-                        <div class="absolute top-4 right-4 bg-space-purple/20 text-space-purple text-xs px-2 py-1 rounded backdrop-blur-md border border-space-purple/30 z-20">Aplikasi Android</div>
+                        <div class="absolute top-4 right-4 bg-space-purple/20 text-space-purple text-xs px-2 py-1 rounded backdrop-blur-md border border-space-purple/30 z-20">
+                            <span class="lang-id">Aplikasi Android</span><span class="lang-en">Android App</span>
+                        </div>
                     </div>
                     <div class="w-full lg:w-3/5 p-6 md:p-8 flex flex-col flex-grow">
-                        <h3 class="font-space text-2xl font-bold text-white mb-3 group-hover:text-space-neon transition-colors">Aplikasi Streaming: TV KITA</h3>
+                        <h3 class="font-space text-2xl font-bold text-white mb-3 group-hover:text-space-neon transition-colors">
+                            <span class="lang-id">Aplikasi Streaming:</span><span class="lang-en">Streaming App:</span> TV KITA
+                        </h3>
                         
                         <div class="space-y-3 mb-6 flex-grow">
-                            <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-white font-medium">Peran:</strong> Solo Developer / UI Designer</p>
-                            <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-white font-medium">Deskripsi & Hasil:</strong> Merancang aplikasi streaming hiburan satu pintu yang interaktif. Mampu melayani pemutaran Video On Demand dan siaran Live TV Nasional & Olahraga dengan stabilitas tinggi dan navigasi intuitif. Menghasilkan antarmuka yang setara dengan platform hiburan mainstream.</p>
+                            <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-white font-medium"><span class="lang-id">Peran:</span><span class="lang-en">Role:</span></strong> Solo Developer / UI Designer</p>
+                            <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-white font-medium"><span class="lang-id">Deskripsi & Hasil:</span><span class="lang-en">Description & Result:</span></strong> <span class="lang-id">Merancang aplikasi streaming hiburan satu pintu yang interaktif. Mampu melayani pemutaran Video On Demand dan siaran Live TV Nasional & Olahraga dengan stabilitas tinggi dan navigasi intuitif. Menghasilkan antarmuka yang setara dengan platform hiburan mainstream.</span><span class="lang-en">Designed an interactive one-stop entertainment streaming app. Capable of serving Video On Demand and Live National & Sports TV broadcasts with high stability and intuitive navigation. Produced an interface on par with mainstream entertainment platforms.</span></p>
                         </div>
                         
                         <!-- Screenshots Gallery -->
                         <div class="mb-6">
-                            <h4 class="text-xs text-space-neon mb-2 font-space uppercase tracking-wider"><i class="fa-solid fa-image mr-1"></i> Showcase UI <span class="text-slate-500 lowercase ml-1 text-[10px]">(Klik untuk zoom)</span></h4>
+                            <h4 class="text-xs text-space-neon mb-2 font-space uppercase tracking-wider"><i class="fa-solid fa-image mr-1"></i> Showcase UI</h4>
                             <div class="flex gap-3 overflow-x-auto pb-2 snap-x hide-scrollbar">
                                 <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/DASHBOARD%20Preview%20TVKITA.jpeg?raw=true" draggable="false" class="showcase-img h-40 w-auto rounded-lg snap-center border border-white/10 hover:border-space-neon transition-colors cursor-pointer" alt="Dashboard TV KITA" title="Dashboard">
                                 <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/SportPreview%20TVKITA.jpeg?raw=true" draggable="false" class="showcase-img h-40 w-auto rounded-lg snap-center border border-white/10 hover:border-space-neon transition-colors cursor-pointer" alt="Sport CH TV KITA" title="Sport CH">
@@ -394,7 +431,7 @@
                                 <span class="text-xs font-mono text-slate-300 bg-white/5 px-2 py-1 rounded border border-white/10">Streaming Data</span>
                             </div>
                             <a href="https://download1078.mediafire.com/htsmnoxklf3g0dZwPXYPzUQnuej-5Snhk_vOk6TilDMSE8NdWEqbloh7YzS8KrCx16VexWhyufJFp10k9Wkq3oZvxS7kA1KAcTQzy6rhgGfYwlZALdVvD-zU8MIK06jceTFWO0b_ytZvQEhPo-MakaNkPwqVNA3NZJ-kH7uZAvo/q9zae2e38nfj8y7/ApkStreaming+Raden+Mufatsa+1.apk" target="_blank" draggable="false" class="w-full sm:w-auto text-center bg-space-neon/10 hover:bg-space-neon text-space-neon hover:text-space-900 border border-space-neon/50 px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-download"></i> Unduh APK
+                                <i class="fa-solid fa-download"></i> <span class="lang-id">Unduh APK</span><span class="lang-en">Download APK</span>
                             </a>
                         </div>
                     </div>
@@ -405,19 +442,23 @@
                     <div class="w-full lg:w-2/5 h-64 lg:h-auto bg-space-800 relative overflow-hidden flex items-center justify-center border-b lg:border-b-0 lg:border-r border-white/10">
                         <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/RADEN%20TV%20LOGO.jpeg?raw=true" draggable="false" class="absolute inset-0 w-full h-full object-cover opacity-20 blur-xl">
                         <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/RADEN%20TV%20LOGO.jpeg?raw=true" alt="Raden TV Logo" draggable="false" class="w-32 h-32 object-contain group-hover:scale-110 transition-transform duration-500 z-10 drop-shadow-[0_0_15px_rgba(0,240,255,0.5)]">
-                        <div class="absolute top-4 right-4 bg-space-purple/20 text-space-purple text-xs px-2 py-1 rounded backdrop-blur-md border border-space-purple/30 z-20">Aplikasi Android</div>
+                        <div class="absolute top-4 right-4 bg-space-purple/20 text-space-purple text-xs px-2 py-1 rounded backdrop-blur-md border border-space-purple/30 z-20">
+                            <span class="lang-id">Aplikasi Android</span><span class="lang-en">Android App</span>
+                        </div>
                     </div>
                     <div class="w-full lg:w-3/5 p-6 md:p-8 flex flex-col flex-grow">
-                        <h3 class="font-space text-2xl font-bold text-white mb-3 group-hover:text-space-neon transition-colors">Aplikasi Streaming: Raden TV</h3>
+                        <h3 class="font-space text-2xl font-bold text-white mb-3 group-hover:text-space-neon transition-colors">
+                            <span class="lang-id">Aplikasi Streaming:</span><span class="lang-en">Streaming App:</span> Raden TV
+                        </h3>
                         
                         <div class="space-y-3 mb-6 flex-grow">
-                            <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-white font-medium">Peran:</strong> Solo Developer / UI Designer</p>
-                            <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-white font-medium">Deskripsi & Hasil:</strong> Merancang platform streaming Raden TV dengan antarmuka yang bersih dan modern. Menampilkan fitur pemutar media, loading screen kustom, serta struktur navigasi channel yang terorganisir untuk memanjakan pengalaman pengguna.</p>
+                            <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-white font-medium"><span class="lang-id">Peran:</span><span class="lang-en">Role:</span></strong> Solo Developer / UI Designer</p>
+                            <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-white font-medium"><span class="lang-id">Deskripsi & Hasil:</span><span class="lang-en">Description & Result:</span></strong> <span class="lang-id">Merancang platform streaming Raden TV dengan antarmuka yang bersih dan modern. Menampilkan fitur pemutar media, loading screen kustom, serta struktur navigasi channel yang terorganisir untuk memanjakan pengalaman pengguna.</span><span class="lang-en">Designed the Raden TV streaming platform with a clean and modern interface. Features a media player, custom loading screen, and an organized channel navigation structure to pamper the user experience.</span></p>
                         </div>
                         
                         <!-- Screenshots Gallery -->
                         <div class="mb-6">
-                            <h4 class="text-xs text-space-neon mb-2 font-space uppercase tracking-wider"><i class="fa-solid fa-image mr-1"></i> Showcase UI <span class="text-slate-500 lowercase ml-1 text-[10px]">(Klik untuk zoom)</span></h4>
+                            <h4 class="text-xs text-space-neon mb-2 font-space uppercase tracking-wider"><i class="fa-solid fa-image mr-1"></i> Showcase UI</h4>
                             <div class="flex gap-3 overflow-x-auto pb-2 snap-x hide-scrollbar">
                                 <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/RADEN%20TV%20LOADING%20SCREEN.jpeg?raw=true" draggable="false" class="showcase-img h-40 w-auto rounded-lg snap-center border border-white/10 hover:border-space-neon transition-colors cursor-pointer" alt="Loading Screen Raden TV" title="Loading Screen">
                                 <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/RADEN%20TV%20PLAYER%20.jpeg?raw=true" draggable="false" class="showcase-img h-40 w-auto rounded-lg snap-center border border-white/10 hover:border-space-neon transition-colors cursor-pointer" alt="Player Raden TV" title="Player">
@@ -446,16 +487,18 @@
                         <div class="absolute top-4 right-4 bg-green-400/20 text-green-400 text-xs px-2 py-1 rounded backdrop-blur-md border border-green-400/30 z-20">Backend Logic</div>
                     </div>
                     <div class="w-full lg:w-3/5 p-6 md:p-8 flex flex-col flex-grow">
-                        <h3 class="font-space text-2xl font-bold text-white mb-3 group-hover:text-green-400 transition-colors">Sistem Manajemen M3U</h3>
+                        <h3 class="font-space text-2xl font-bold text-white mb-3 group-hover:text-green-400 transition-colors">
+                            <span class="lang-id">Sistem Manajemen M3U</span><span class="lang-en">M3U Management System</span>
+                        </h3>
                         
                         <div class="space-y-3 mb-6 flex-grow">
-                            <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-white font-medium">Peran:</strong> Data Struktur / Logic</p>
-                            <p class="text-slate-400 text-sm leading-relaxed"><strong class="text-white font-medium">Deskripsi & Hasil:</strong> Menyusun dan merapikan database playlist siaran berbasis format <span class="text-green-400 font-mono text-xs">#EXTM3U</span>. Pekerjaan ini memastikan struktur antrean siaran menjadi ringan, mudah di-parsing, dan terorganisir sempurna untuk dipanggil oleh aplikasi klien tanpa kendala.</p>
+                            <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-white font-medium"><span class="lang-id">Peran:</span><span class="lang-en">Role:</span></strong> Data Struktur / Logic</p>
+                            <p class="text-slate-400 text-sm leading-relaxed"><strong class="text-white font-medium"><span class="lang-id">Deskripsi & Hasil:</span><span class="lang-en">Description & Result:</span></strong> <span class="lang-id">Menyusun dan merapikan database playlist siaran berbasis format <span class="text-green-400 font-mono text-xs">#EXTM3U</span>. Pekerjaan ini memastikan struktur antrean siaran menjadi ringan, mudah di-parsing, dan terorganisir sempurna untuk dipanggil oleh aplikasi klien tanpa kendala.</span><span class="lang-en">Organized and structured a broadcast playlist database based on the <span class="text-green-400 font-mono text-xs">#EXTM3U</span> format. Produced a lightweight, easily parsable, and perfectly organized broadcast queue structure for client applications.</span></p>
                         </div>
                         
                         <!-- Screenshots Gallery -->
                         <div class="mb-6">
-                            <h4 class="text-xs text-green-400 mb-2 font-space uppercase tracking-wider"><i class="fa-solid fa-code mr-1"></i> Data Structure Preview <span class="text-slate-500 lowercase ml-1 text-[10px]">(Klik untuk zoom)</span></h4>
+                            <h4 class="text-xs text-green-400 mb-2 font-space uppercase tracking-wider"><i class="fa-solid fa-code mr-1"></i> Data Structure Preview</h4>
                             <div class="flex gap-3 overflow-x-auto pb-2 snap-x hide-scrollbar">
                                 <img src="https://github.com/raden12-boot/radenmufatsa-portofolio/blob/main/extm3u.png?raw=true" draggable="false" class="showcase-img h-40 w-auto rounded-lg snap-center border border-white/10 hover:border-green-400 transition-colors cursor-pointer" alt="Struktur Code EXTM3U" title="Struktur M3U">
                             </div>
@@ -479,10 +522,12 @@
                         <div class="absolute top-4 right-4 bg-blue-400/20 text-blue-400 text-xs px-2 py-1 rounded backdrop-blur-md border border-blue-400/30 z-20">Web Dev</div>
                     </div>
                     <div class="w-full lg:w-3/5 p-6 md:p-8 flex flex-col flex-grow">
-                        <h3 class="font-space text-2xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">Space Portofolio (SPA)</h3>
+                        <h3 class="font-space text-2xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+                            <span class="lang-id">Space Portofolio</span><span class="lang-en">Space Portfolio</span> (SPA)
+                        </h3>
                         <div class="space-y-3 mb-6 flex-grow">
-                            <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-white font-medium">Peran:</strong> Web Developer</p>
-                            <p class="text-slate-400 text-sm leading-relaxed"><strong class="text-white font-medium">Deskripsi & Hasil:</strong> Membangun website portofolio interaktif *Single Page Application* dengan arsitektur HTML dinamis. Menghasilkan UI bertema galaksi dengan animasi canvas yang ringan, fitur anti-inspect, dan sistem notifikasi kustom yang estetik.</p>
+                            <p class="text-slate-300 text-sm leading-relaxed"><strong class="text-white font-medium"><span class="lang-id">Peran:</span><span class="lang-en">Role:</span></strong> Web Developer</p>
+                            <p class="text-slate-400 text-sm leading-relaxed"><strong class="text-white font-medium"><span class="lang-id">Deskripsi & Hasil:</span><span class="lang-en">Description & Result:</span></strong> <span class="lang-id">Membangun website portofolio interaktif *Single Page Application* dengan arsitektur HTML dinamis. Menghasilkan UI bertema galaksi dengan animasi canvas yang ringan, fitur anti-inspect, dan sistem notifikasi kustom yang estetik.</span><span class="lang-en">Built an interactive *Single Page Application* portfolio website with dynamic HTML architecture. Produced a galaxy-themed UI with lightweight canvas animations, anti-inspect features, and an aesthetic custom notification system.</span></p>
                         </div>
                         
                         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-auto pt-5 border-t border-white/5">
@@ -508,9 +553,7 @@
             
             <h2 class="font-space text-4xl md:text-5xl font-bold text-white mb-16 text-glow">Aries Constellation</h2>
             
-            <!-- SVG Constellation Display -->
             <div class="relative w-full max-w-md mx-auto aspect-square flex items-center justify-center">
-                <!-- Soft background glow for the constellation -->
                 <div class="absolute inset-0 bg-space-neon/5 rounded-full blur-3xl"></div>
                 
                 <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-2xl z-10" xmlns="http://www.w3.org/2000/svg">
@@ -524,16 +567,13 @@
                         </filter>
                     </defs>
 
-                    <!-- Connection Lines -->
                     <polyline points="20,70 45,60 70,35 85,45" fill="none" stroke="rgba(0, 240, 255, 0.4)" stroke-width="0.5" stroke-dasharray="2, 1"/>
                     
-                    <!-- Stars -->
                     <circle cx="20" cy="70" r="1.5" fill="#FFF" filter="url(#glow)" class="animate-pulse-glow" />
                     <circle cx="45" cy="60" r="2" fill="#FFF" filter="url(#glow)" class="animate-pulse-glow" style="animation-delay: 1s;" />
                     <circle cx="70" cy="35" r="2.5" fill="#FFF" filter="url(#glow)" class="animate-pulse-glow" style="animation-delay: 2s;" />
                     <circle cx="85" cy="45" r="1.5" fill="#FFF" filter="url(#glow)" class="animate-pulse-glow" style="animation-delay: 0.5s;" />
 
-                    <!-- Labels (Optional visual flair) -->
                     <text x="73" y="32" fill="rgba(255,255,255,0.5)" font-size="3" font-family="monospace">Hamal</text>
                     <text x="42" y="56" fill="rgba(255,255,255,0.5)" font-size="3" font-family="monospace">Sheratan</text>
                 </svg>
@@ -542,7 +582,7 @@
             <div class="mt-8 glass inline-block px-8 py-4 rounded-2xl">
                 <p class="text-xl text-white font-space tracking-wide">
                     <i class="fa-solid fa-star text-space-neon text-sm mr-2"></i> 
-                    26 Maret 2011 <span class="text-slate-500 mx-2">•</span> <span class="text-gradient font-bold">Aries</span>
+                    26 <span class="lang-id">Maret</span><span class="lang-en">March</span> 2011 <span class="text-slate-500 mx-2">•</span> <span class="text-gradient font-bold">Aries</span>
                 </p>
             </div>
         </div>
@@ -551,16 +591,21 @@
     <!-- Contact Section -->
     <section id="contact" class="py-24">
         <div class="max-w-3xl mx-auto px-6 text-center">
-            <h2 class="font-space text-3xl md:text-4xl font-bold text-white mb-6">Mari Berkolaborasi</h2>
+            <h2 class="font-space text-3xl md:text-4xl font-bold text-white mb-6">
+                <span class="lang-id">Mari Berkolaborasi</span><span class="lang-en">Let's Collaborate</span>
+            </h2>
             <p class="text-slate-400 mb-10 max-w-xl mx-auto">
-                Tertarik untuk bekerja sama, atau sekadar ingin berdiskusi tentang web dan teknologi streaming? Jangan ragu untuk menghubungi saya.
+                <span class="lang-id">Tertarik untuk bekerja sama, atau sekadar ingin berdiskusi tentang web dan teknologi streaming? Jangan ragu untuk menghubungi saya.</span>
+                <span class="lang-en">Interested in collaborating, or simply want to discuss web and streaming technology? Don't hesitate to reach out to me.</span>
             </p>
 
             <div class="glass rounded-3xl p-8 md:p-10 border-t-4 border-t-space-neon">
                 <div class="flex flex-col md:flex-row justify-center gap-6">
                     <a href="mailto:radenmufatsasachenkaariyanto@gmail.com" draggable="false" class="flex items-center justify-center gap-3 bg-white/5 hover:bg-space-neon hover:text-space-900 text-white px-6 py-4 rounded-xl transition-all border border-white/10 hover:border-space-neon group">
                         <i class="fa-solid fa-envelope text-xl group-hover:text-space-900 text-space-neon"></i>
-                        <span class="font-medium text-sm md:text-base break-all">Email Saya</span>
+                        <span class="font-medium text-sm md:text-base break-all">
+                            <span class="lang-id">Email Saya</span><span class="lang-en">My Email</span>
+                        </span>
                     </a>
                     
                     <a href="https://wa.me/6285888223922" target="_blank" rel="noopener noreferrer" draggable="false" class="flex items-center justify-center gap-3 bg-white/5 hover:bg-[#25D366] hover:text-white text-white px-6 py-4 rounded-xl transition-all border border-white/10 hover:border-[#25D366] group">
@@ -572,7 +617,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="border-t border-white/10 bg-space-900/80 backdrop-blur-md py-8 text-center relative z-10">
         <p class="text-slate-500 text-sm font-space tracking-wide">
             Built under the Aries sky <i class="fa-solid fa-sparkles text-space-neon ml-1 text-xs"></i>
@@ -582,10 +626,9 @@
         </p>
     </footer>
 
-    <!-- LIGHTBOX / POPUP GALLERY (HIDDEN BY DEFAULT) -->
+    <!-- LIGHTBOX / POPUP GALLERY -->
     <div id="lightbox" class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex-col items-center justify-center">
         
-        <!-- Toolbar Atas -->
         <div class="absolute top-0 w-full p-4 flex justify-between items-center z-10 bg-gradient-to-b from-black/80 to-transparent">
             <!-- Zoom & Share Controls -->
             <div class="flex gap-3 bg-space-800/80 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
@@ -597,54 +640,66 @@
                     <i class="fa-solid fa-magnifying-glass-plus text-lg"></i>
                 </button>
                 <div class="w-px h-5 bg-white/20 my-auto"></div>
-                <button id="btn-share-img" class="text-white hover:text-space-neon transition-colors px-2 flex items-center gap-2" title="Bagikan">
+                <button id="btn-share-img" class="text-white hover:text-space-neon transition-colors px-2 flex items-center gap-2" title="Share">
                     <i class="fa-solid fa-share-nodes text-lg"></i>
                     <span class="text-sm font-medium hidden sm:inline">Share</span>
                 </button>
             </div>
             
-            <!-- Close Button -->
             <button id="btn-close-lightbox" class="text-white hover:text-red-500 transition-colors bg-space-800/80 border border-white/10 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md">
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
         </div>
 
-        <!-- Area Gambar -->
         <div class="w-full h-full flex items-center justify-center p-4 pt-20 pb-20 overflow-auto" id="lightbox-scroll-area">
-            <img id="lightbox-img" src="" alt="Preview Gambar" class="max-w-full max-h-full object-contain transition-transform duration-300 ease-in-out origin-center" draggable="false">
+            <img id="lightbox-img" src="" alt="Preview" class="max-w-full max-h-full object-contain transition-transform duration-300 ease-in-out origin-center" draggable="false">
         </div>
         
-        <!-- Judul Gambar di Bawah -->
-        <div class="absolute bottom-6 text-center z-10">
+        <div class="absolute bottom-6 text-center z-10 pointer-events-none">
             <span id="lightbox-caption" class="bg-space-800/80 border border-white/10 text-white px-4 py-2 rounded-full text-sm font-space tracking-wide backdrop-blur-md">Caption</span>
         </div>
     </div>
 
-    <!-- TOAST NOTIFICATION (PENGGANTI ALERT) -->
+    <!-- TOAST NOTIFICATION -->
     <div id="toast-notification" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-space-neon text-space-900 px-6 py-3 rounded-full font-bold shadow-[0_0_15px_rgba(0,240,255,0.5)] z-[110] transition-all duration-300 opacity-0 translate-y-10 flex items-center gap-2 pointer-events-none">
         <i class="fa-solid fa-circle-check"></i>
-        <span id="toast-message" class="text-sm">Notifikasi muncul di sini</span>
+        <span id="toast-message" class="text-sm">Notification</span>
     </div>
 
-    <!-- JavaScript Interaktif -->
     <script>
         // --- KEAMANAN ANTI-INSPECT & ANTI-DRAG ---
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault(); 
-        });
-
-        document.addEventListener('dragstart', function(e) {
-            e.preventDefault();
-        });
-
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('dragstart', e => e.preventDefault());
         document.onkeydown = function(e) {
             if(e.keyCode == 123) return false;
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.keyCode == 'P'.charCodeAt(0)) return false;
+            if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
+            if(e.ctrlKey && (e.keyCode == 'U'.charCodeAt(0) || e.keyCode == 'S'.charCodeAt(0) || e.keyCode == 'P'.charCodeAt(0))) return false;
         }
+
+        // --- LANGUAGE TOGGLE LOGIC ---
+        const langBtn = document.getElementById('lang-toggle-btn');
+        const htmlTag = document.documentElement;
+        
+        // Cek LocalStorage untuk preferensi bahasa tersimpan
+        if (localStorage.getItem('theme-lang') === 'en') {
+            document.body.classList.add('lang-en');
+            htmlTag.setAttribute('lang', 'en');
+        }
+
+        langBtn.addEventListener('click', () => {
+            document.body.classList.toggle('lang-en');
+            const isEng = document.body.classList.contains('lang-en');
+            
+            if (isEng) {
+                localStorage.setItem('theme-lang', 'en');
+                htmlTag.setAttribute('lang', 'en');
+                showToast("Language changed to English");
+            } else {
+                localStorage.setItem('theme-lang', 'id');
+                htmlTag.setAttribute('lang', 'id');
+                showToast("Bahasa diubah ke Indonesia");
+            }
+        });
 
         // --- NAVBAR & SIDEBAR MOBILE ---
         const navbar = document.getElementById('navbar');
@@ -688,17 +743,14 @@
             const toastMsg = document.getElementById('toast-message');
             
             toastMsg.innerText = message;
-            // Munculkan toast
             toast.classList.remove('opacity-0', 'translate-y-10');
             
-            // Sembunyikan otomatis setelah 3.5 detik
             setTimeout(() => {
                 toast.classList.add('opacity-0', 'translate-y-10');
-            }, 3500);
+            }, 3000);
         }
 
-
-        // --- LIGHTBOX GALLERY SYSTEM (ZOOM & SHARE) ---
+        // --- LIGHTBOX GALLERY SYSTEM ---
         const showcaseImages = document.querySelectorAll('.showcase-img');
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
@@ -710,81 +762,69 @@
 
         let currentScale = 1;
 
-        // Buka Lightbox saat gambar di-klik
         showcaseImages.forEach(img => {
             img.addEventListener('click', () => {
-                // Reset zoom
                 currentScale = 1;
                 lightboxImg.style.transform = `scale(${currentScale})`;
-                
-                // Ambil data gambar
                 lightboxImg.src = img.src;
                 lightboxCaption.innerText = img.alt || 'Karya Showcase';
-                
-                // Tampilkan lightbox
                 lightbox.classList.remove('hidden');
                 setTimeout(() => lightbox.classList.remove('opacity-0'), 10);
-                
-                // Kunci scroll body
                 document.body.style.overflow = 'hidden';
             });
         });
 
-        // Tutup Lightbox
         function closeLightbox() {
             lightbox.classList.add('opacity-0');
             setTimeout(() => {
                 lightbox.classList.add('hidden');
                 lightboxImg.src = '';
-                // Buka scroll body
                 document.body.style.overflow = '';
             }, 300);
         }
 
         btnCloseLightbox.addEventListener('click', closeLightbox);
-        
-        // Tutup jika klik background di luar gambar
         document.getElementById('lightbox-scroll-area').addEventListener('click', (e) => {
             if(e.target === e.currentTarget) closeLightbox();
         });
 
-        // Fitur Zoom
         btnZoomIn.addEventListener('click', () => {
-            if (currentScale < 3) { // Maksimal zoom 3x
+            if (currentScale < 3) {
                 currentScale += 0.5;
                 lightboxImg.style.transform = `scale(${currentScale})`;
             }
         });
 
         btnZoomOut.addEventListener('click', () => {
-            if (currentScale > 1) { // Minimal kembali ke ukuran 1x
+            if (currentScale > 1) {
                 currentScale -= 0.5;
                 lightboxImg.style.transform = `scale(${currentScale})`;
             }
         });
 
-        // Fitur Share (Dirancang dengan hook untuk rekruter/HRD)
+        // Share Hook (Bilingual Text)
         btnShare.addEventListener('click', async () => {
-            const shareText = "Mencari Web Developer berbakat dengan kemampuan UI/UX dan penguasaan App Builder? 🚀\n\nIni adalah salah satu mahakarya dari Raden Mufatsa S.A! Eksplorasi portofolio lengkapnya dan temukan kandidat potensial Anda di sini:\n\n🔗 https://raden12-boot.github.io/radenmufatsa-portofolio/";
+            const isEng = document.body.classList.contains('lang-en');
+            
+            const shareTextID = "Mencari Web Developer berbakat dengan kemampuan UI/UX dan penguasaan App Builder? 🚀\n\nIni adalah salah satu karya dari Raden Mufatsa S.A! Eksplorasi portofolio lengkapnya dan temukan kandidat potensial Anda di sini:\n\n🔗 https://raden12-boot.github.io/radenmufatsa-portofolio/";
+            const shareTextEN = "Looking for a talented Web Developer with UI/UX skills and App Builder mastery? 🚀\n\nCheck out this project by Raden Mufatsa S.A! Explore his complete portfolio and discover your potential candidate here:\n\n🔗 https://raden12-boot.github.io/radenmufatsa-portofolio/";
+            
+            const shareText = isEng ? shareTextEN : shareTextID;
 
             if (navigator.share) {
-                // Jika browser mendukung native sharing (seperti di HP)
                 try {
                     await navigator.share({
                         title: 'Portofolio Web Developer - Raden Mufatsa',
                         text: shareText
                     });
                 } catch (err) {
-                    console.log('User membatalkan share');
+                    console.log('Share dibatalkan');
                 }
             } else {
-                // Fallback untuk browser PC: Copy ke clipboard dan tampilkan Toast
                 try {
-                    // Coba copy menggunakan eksekusi native modern
                     await navigator.clipboard.writeText(shareText);
-                    showToast("Teks & Link disalin ke clipboard!");
+                    showToast(isEng ? "Text & Link copied to clipboard!" : "Teks & Link disalin ke clipboard!");
                 } catch (err) {
-                    // Fallback jadul jika WriteText diblokir iframe/policy
                     const textArea = document.createElement("textarea");
                     textArea.value = shareText;
                     document.body.appendChild(textArea);
@@ -792,17 +832,16 @@
                     textArea.select();
                     try {
                         document.execCommand('copy');
-                        showToast("Teks & Link berhasil disalin!");
+                        showToast(isEng ? "Successfully copied!" : "Berhasil disalin!");
                     } catch (err) {
-                        showToast("Gagal menyalin, sistem menolak.");
+                        showToast(isEng ? "Failed to copy." : "Gagal menyalin.");
                     }
                     document.body.removeChild(textArea);
                 }
             }
         });
 
-
-        // --- SPACE CANVAS ANIMATION ---
+        // --- STREAMING_CHUNK:Space Canvas Animation... ---
         const canvas = document.getElementById('space-canvas');
         const ctx = canvas.getContext('2d');
 
